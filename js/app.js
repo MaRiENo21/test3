@@ -40,6 +40,29 @@
 
 // build the nav
 
+/* Sections auslesen und Array(data-nav) speichern */
+const section = document.getElementsByTagName('section');
+const dataNavs = [];
+for(let el of section){
+    dataNavs.push(el.getAttribute("data-nav"));
+}
+console.log(dataNavs);
+
+const navbar = document.getElementById('navbar__list');
+
+let el;
+/* for(let el of dataNav) = for(let i=0; i<dataNavs.length;i++) */
+for(el of dataNavs){
+    const liste = document.createElement("li");
+    liste.innerHTML = el;
+    navbar.appendChild(liste);
+}
+
+el.style.color = 'blue';
+
+
+
+
 
 // Add class 'active' to section when near top of viewport
 
