@@ -43,22 +43,40 @@
 /* Sections auslesen und Array(data-nav) speichern */
 const section = document.getElementsByTagName('section');
 const dataNavs = [];
+const sectionMapping = {};
 for(let el of section){
     dataNavs.push(el.getAttribute("data-nav"));
+    sectionMapping [el.getAttribute ("data-nav")] = el;
 }
 console.log(dataNavs);
 
 const navbar = document.getElementById('navbar__list');
 
-let el;
+
+function scrollen(htmlNode){
+htmlNode.scrollIntoView({block: "start", behavior: "smooth"});
+}
+
+let letztesGeklicktesElement;
+/* Listenelemente erstellen & zu Anker springen */
 /* for(let el of dataNav) = for(let i=0; i<dataNavs.length;i++) */
-for(el of dataNavs){
+for(let el of dataNavs){
     const liste = document.createElement("li");
     liste.innerHTML = el;
+    liste.addEventListener("click",()=>{
+        scrollen(sectionMapping[el]);
+        /* Reihenfolge wichtig! macht zuerst bei click grün, dann if übrspringen, dann merkt er sich, dass letztesGeklicktesElement = liste, dann fängt er von vorne an und kann diesmal if ausführen */
+        liste.style.color = '#cc1';
+        if(letztesGeklicktesElement){
+            letztesGeklicktesElement.style.color = 'rgba(136,203,171,1)';
+        }
+        letztesGeklicktesElement = liste;
+    });
     navbar.appendChild(liste);
 }
 
-el.style.color = 'blue';
+
+/*navbar.style.color = 'blue';*/
 
 
 
