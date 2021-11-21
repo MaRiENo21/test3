@@ -22,6 +22,10 @@
  * Define Global Variables
  * 
 */
+const section = document.getElementsByTagName('section');
+const dataNavs = [];
+const sectionMapping = {};
+const mapSectionToList = {};
 
 
 /**
@@ -31,7 +35,6 @@
 */
 
 
-
 /**
  * End Helper Functions
  * Begin Main Functions
@@ -39,20 +42,19 @@
 */
 
 // build the nav
-
+// Build menu 
 /* Sections auslesen und Array(data-nav) speichern */
-const section = document.getElementsByTagName('section');
-const dataNavs = [];
-const sectionMapping = {};
-for(let el of section){
+
+for (let el of section){
     dataNavs.push(el.getAttribute("data-nav"));
+    /* -------------VERSTEHE ICH NICHT */
     sectionMapping [el.getAttribute ("data-nav")] = el;
 }
-console.log(dataNavs);
+/*console.log(dataNavs);*/
 
 const navbar = document.getElementById('navbar__list');
 
-
+// Scroll to section on link click
 function scrollen(htmlNode){
 htmlNode.scrollIntoView({block: "start", behavior: "smooth"});
 }
@@ -60,44 +62,57 @@ htmlNode.scrollIntoView({block: "start", behavior: "smooth"});
 let letztesGeklicktesElement;
 /* Listenelemente erstellen & zu Anker springen */
 /* for(let el of dataNav) = for(let i=0; i<dataNavs.length;i++) */
-for(let el of dataNavs){
+const navListenElemente = [];
+
+for (let el of dataNavs){
     const liste = document.createElement("li");
     liste.innerHTML = el;
     liste.addEventListener("click",()=>{
         scrollen(sectionMapping[el]);
         /* Reihenfolge wichtig! macht zuerst bei click grün, dann if übrspringen, dann merkt er sich, dass letztesGeklicktesElement = liste, dann fängt er von vorne an und kann diesmal if ausführen */
-        liste.style.color = '#cc1';
+        /*liste.style.color = '#cc1';
         if(letztesGeklicktesElement){
             letztesGeklicktesElement.style.color = 'rgba(136,203,171,1)';
         }
-        letztesGeklicktesElement = liste;
+        letztesGeklicktesElement = liste;*/
     });
     navbar.appendChild(liste);
+    
+    navListenElemente.push(liste);
+    mapSectionToList[el] = liste;
+
 }
 
-
-/*navbar.style.color = 'blue';*/
-
+console.log(Object.keys(mapSectionToList));
 
 
 
 
 // Add class 'active' to section when near top of viewport
 
-
-// Scroll to anchor ID using scrollTO event
-
-
-/**
- * End Main Functions
- * Begin Events
- * 
-*/
-
-// Build menu 
-
-// Scroll to section on link click
-
 // Set sections as active
+function makeActive(){
+    for (let dn of dataNavs){
+        let el = sectionMapping[dn];
+        let navEl = mapSectionToList[dn];
+        const box = el.getBoundingClientRect();
+        if (box.top <= 150 && box.bottom >= 150) {
+             // Apply active state on the current section and the corresponding Nav link.
+            el.classList.add("your-active-class");
+            navEl.style.color = '#cc1';
+          } else {
+            // Remove active state from other section and corresponding Nav link.
+            el.classList.remove("your-active-class");
+            navEl.style.color = 'rgba(136,203,171,1)';
+          }
+    } 
+}
+
+// Make sections active
+document.addEventListener("scroll", function() {
+    makeActive();
+  });
+
+// Tip: Detect the element location relative to the viewport using .getBoundingClientRect() built-in function.
 
 
