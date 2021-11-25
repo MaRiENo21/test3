@@ -1,8 +1,8 @@
-# Landing Page Project
+# Landingpage Project
 
-## Table of Contents
+## About
 
-* [Instructions](#instructions)
+Code for learning and experimenting with Javascript
 
 ## Project Description
 
